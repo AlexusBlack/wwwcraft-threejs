@@ -23,4 +23,5 @@ export default class Block {
   z: number
   type: BlockType
   placed: boolean
+  attributes: any[] = []
 }

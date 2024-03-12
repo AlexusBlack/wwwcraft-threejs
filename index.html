@@ -58,7 +58,14 @@
       <button id="back" class="button">Back</button>
     </div>
 
-    <div class="settings hidden">
+    <form class="create-link dialog hidden">
+      <p>Please enter the link URL:</p>
+      <input class="input" type="text" id="link" />
+
+      <button id="create-link-btn" class="button" type="submit">Apply</button>
+    </form>
+
+    <div class="settings dialog hidden">
       <p id="distance">Render Distance: 3</p>
       <input
         type="range"

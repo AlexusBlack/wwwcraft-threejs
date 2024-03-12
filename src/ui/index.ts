@@ -229,6 +229,25 @@ export default class UI {
 
   settingBack = document.querySelector('#setting-back')
 
+
+  linkDialog = () => {
+    const linkDialogUi = document.querySelector('.create-link')
+    const linkDialogUiInput = linkDialogUi?.querySelector('input')
+    const linkDialogUiBtn = linkDialogUi?.querySelector('button')
+    return new Promise(resolve => {
+      linkDialogUi?.classList.remove('hidden')
+      // clear input
+      linkDialogUiInput?.setAttribute('value', '')
+      linkDialogUiInput?.focus()
+
+      linkDialogUi?.addEventListener('submit', (e) => {
+        e.preventDefault()
+        linkDialogUi?.classList.add('hidden')
+        resolve(linkDialogUiInput?.value)
+      })
+    });
+  }
+
   onPlay = () => {
     isMobile && this.joystick.init()
     this.menu?.classList.add('hidden')

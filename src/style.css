@@ -213,7 +213,7 @@ body {
   transform: translate(-99%, 0%) rotate(-90deg) scale(1, -1);
 }
 
-.settings {
+.dialog {
   z-index: 2;
   position: fixed;
   left: 50%;
@@ -221,7 +221,6 @@ body {
   transform: translate(-50%, 0%);
 
   width: 300px;
-  height: 370px;
   color: white;
   background-color: #727272;
   border-left: 2px solid #a4a4a4;
@@ -236,6 +235,20 @@ body {
   user-select: none;
   text-align: left;
   line-height: 1.8rem;
+}
+
+.settings {
+  height: 370px;
+}
+
+.input {
+  appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 32px;
+  background-color: #dddddd;
+  box-shadow: 0 0 0 2px black;
+  margin-bottom: 10px;
 }
 
 #distance-input,

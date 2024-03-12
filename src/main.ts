@@ -19,6 +19,7 @@ const terrain = new Terrain(scene, camera)
 const control = new Control(scene, camera, player, terrain, audio)
 
 const ui = new UI(terrain, control)
+control.ui = ui
 
 // animation
 ;(function animate() {

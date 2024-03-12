@@ -6,6 +6,7 @@ import Terrain, { BlockType } from '../terrain'
 import Block from '../terrain/mesh/block'
 import Noise from '../terrain/noise'
 import Audio from '../audio'
+import UI from '../ui'
 import { isMobile } from '../utils'
 enum Side {
   front,
@@ -24,6 +25,7 @@ export default class Control {
     terrain: Terrain,
     audio: Audio
   ) {
+    this.ui = null;
     this.scene = scene
     this.camera = camera
     this.player = player
@@ -42,6 +44,7 @@ export default class Control {
   // core properties
   scene: THREE.Scene
   camera: THREE.PerspectiveCamera
+  lastCameraPos = new THREE.Vector3(0, 0, 0)
   player: Player
   terrain: Terrain
   control: PointerLockControls
@@ -427,15 +430,25 @@ export default class Control {
               true
 
             // add to custom blocks
-            this.terrain.customBlocks.push(
-              new Block(
-                normal.x + position.x,
-                normal.y + position.y,
-                normal.z + position.z,
-                this.holdingBlock,
-                true
-              )
+            let newBlock = new Block(
+              normal.x + position.x,
+              normal.y + position.y,
+              normal.z + position.z,
+              this.holdingBlock,
+              true
             )
+            if(newBlock.type == BlockType.diamond) {
+              this.ui.linkDialog().then(link => {
+                newBlock.attributes[0] = link
+                this.terrain.customBlocks.push(
+                  newBlock
+                )
+              })
+            } else {
+              this.terrain.customBlocks.push(
+                newBlock
+              )
+            }
           }
         }
         break
@@ -733,6 +746,20 @@ export default class Control {
       // down collide and jump handler
       if (this.downCollide && !this.isJumping) {
         this.velocity.y = 0
+        const camPos = this.camera.position.clone().add(new THREE.Vector3(0, -1 * (this.player.body.height), 0)).round();
+        if(!camPos.equals(this.lastCameraPos)) {
+          this.lastCameraPos = camPos;
+          console.log(this.lastCameraPos);
+          const blocks = this.terrain.customBlocks.filter(b => b.x === camPos.x && b.y === camPos.y && b.z === camPos.z && b.placed);
+          if(blocks.length > 0) {
+            const block = blocks[0];
+            console.log(block)
+            if(block.type === BlockType.diamond && block.attributes.length > 0) {
+              document.location.href = block.attributes[0];
+            }
+          }
+          // const block = this.raycasterDown.intersectObjects(this.terrain.blocks)[0]
+        }
       } else if (this.downCollide && this.isJumping) {
         this.isJumping = false
       }
