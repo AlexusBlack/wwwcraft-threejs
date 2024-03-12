@@ -754,7 +754,7 @@ export default class Control {
           if(blocks.length > 0) {
             const block = blocks[0];
             console.log(block)
-            if(block.type === BlockType.diamond && block.attributes.length > 0) {
+            if(this.player.mode !== Mode.sneaking && block.type === BlockType.diamond && block.attributes.length > 0) {
               document.location.href = block.attributes[0];
             }
           }
