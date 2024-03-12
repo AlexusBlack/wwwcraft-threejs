@@ -1,10 +1,8 @@
-# minecraft-threejs
+# WWWCraft
 
-English ｜ [中文](https://github.com/vyse12138/minecraft-threejs/blob/main/README_ZH.md)
+Minecraft inspired online sandbox with support of hyperlinks.
 
-Minecraft clone made with Three.js and TypeScript
-
-Check it out: [Minecraft - Three.js](https://mc.yulei.me/)
+Check it out: [WWWCraft](https://mc.alexchernov.com/)
 
 Recommend to use Chrome to get the best experience
 
@@ -28,3 +26,6 @@ Recommend to use Chrome to get the best experience
 - Multiplayer
 - Generates water
 - Higher performance algorithm
+
+## Based on
+https://github.com/vyse12138/minecraft-threejs
