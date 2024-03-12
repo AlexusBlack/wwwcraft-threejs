@@ -749,11 +749,11 @@ export default class Control {
         const camPos = this.camera.position.clone().add(new THREE.Vector3(0, -1 * (this.player.body.height), 0)).round();
         if(!camPos.equals(this.lastCameraPos)) {
           this.lastCameraPos = camPos;
-          console.log(this.lastCameraPos);
+          //console.log(this.lastCameraPos);
           const blocks = this.terrain.customBlocks.filter(b => b.x === camPos.x && b.y === camPos.y && b.z === camPos.z && b.placed);
           if(blocks.length > 0) {
             const block = blocks[0];
-            console.log(block)
+            //console.log(block)
             if(this.player.mode !== Mode.sneaking && block.type === BlockType.diamond && block.attributes.length > 0) {
               document.location.href = block.attributes[0];
             }

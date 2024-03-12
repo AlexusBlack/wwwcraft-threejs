@@ -33,3 +33,5 @@ control.ui = ui
   renderer.render(scene, camera)
   // console.log(performance.now()-p1)
 })()
+
+ui.tryLoadIndexSave()

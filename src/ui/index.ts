@@ -13,6 +13,8 @@ export default class UI {
     this.fps = new FPS()
     this.bag = new Bag()
     this.joystick = new Joystick(control)
+    this.terrain = terrain
+    this.control = control
 
     this.crossHair.className = 'cross-hair'
     this.crossHair.innerHTML = '+'
@@ -51,8 +53,16 @@ export default class UI {
             z: terrain.camera.position.z
           }
         }
+        const json = JSON.stringify(wwwCraftGameData)
+        localStorage.setItem('wwwCraftGameData', json)
 
-        localStorage.setItem('wwwCraftGameData', JSON.stringify(wwwCraftGameData))
+        // saving as file
+        const blob = new Blob([json], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'index.wwwCraft.json'
+        a.click()
 
         // ui update
         this.onExit()
@@ -60,23 +70,25 @@ export default class UI {
       } else {
         // load game
         const wwwCraftGameData = JSON.parse(localStorage.getItem('wwwCraftGameData') || '{}')
+
+        this.loadSave(wwwCraftGameData)
         
-        terrain.noise.seed = Number(wwwCraftGameData.seed) || Math.random()
+        // terrain.noise.seed = Number(wwwCraftGameData.seed) || Math.random()
 
-        const customBlocks = wwwCraftGameData.block || []
-        terrain.customBlocks = customBlocks
-        terrain.initBlocks()
-        terrain.generate()
+        // const customBlocks = wwwCraftGameData.block || []
+        // terrain.customBlocks = customBlocks
+        // terrain.initBlocks()
+        // terrain.generate()
 
-        const position = wwwCraftGameData.position as { x: number; y: number; z: number } ?? null
-        position && (terrain.camera.position.x = position.x)
-        position && (terrain.camera.position.y = position.y)
-        position && (terrain.camera.position.z = position.z)
+        // const position = wwwCraftGameData.position as { x: number; y: number; z: number } ?? null
+        // position && (terrain.camera.position.x = position.x)
+        // position && (terrain.camera.position.y = position.y)
+        // position && (terrain.camera.position.z = position.z)
 
-        // ui update
-        this.onPlay()
-        this.onLoad()
-        !isMobile && control.control.lock()
+        // // ui update
+        // this.onPlay()
+        // this.onLoad()
+        // !isMobile && control.control.lock()
       }
     })
 
@@ -236,6 +248,34 @@ export default class UI {
     });
   }
 
+  loadSave = (wwwCraftGameData) => {
+    this.terrain.noise.seed = Number(wwwCraftGameData.seed) || Math.random()
+
+    const customBlocks = wwwCraftGameData.block || []
+    this.terrain.customBlocks = customBlocks
+    this.terrain.initBlocks()
+    this.terrain.generate()
+
+    const position = wwwCraftGameData.position as { x: number; y: number; z: number } ?? null
+    position && (this.terrain.camera.position.x = position.x)
+    position && (this.terrain.camera.position.y = position.y)
+    position && (this.terrain.camera.position.z = position.z)
+
+    // ui update
+    this.onPlay()
+    this.onLoad()
+    !isMobile && this.control.control.lock()
+  }
+
+  tryLoadIndexSave = async () => {
+    // load /index.wwwCraft.json from server if exists
+    const response = await fetch('/index.wwwCraft.json')
+    if (response.ok) {
+      const wwwCraftGameData = await response.json()
+      this.loadSave(wwwCraftGameData)
+    }
+  }
+
   onPlay = () => {
     isMobile && this.joystick.init()
     this.menu?.classList.add('hidden')
@@ -286,6 +326,7 @@ export default class UI {
     setTimeout(() => {
       this.loadModal?.classList.add('hidden')
     }, 1350)
+
   }
 
   update = () => {
