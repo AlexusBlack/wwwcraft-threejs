@@ -42,45 +42,33 @@ export default class UI {
     this.save?.addEventListener('click', () => {
       if (this.save?.innerHTML === 'Save and Exit') {
         // save game
-        window.localStorage.setItem(
-          'block',
-          JSON.stringify(terrain.customBlocks)
-        )
-        window.localStorage.setItem('seed', JSON.stringify(terrain.noise.seed))
-
-        window.localStorage.setItem(
-          'position',
-          JSON.stringify({
+        const wwwCraftGameData = {
+          block: terrain.customBlocks,
+          seed: terrain.noise.seed,
+          position: {
             x: terrain.camera.position.x,
             y: terrain.camera.position.y,
             z: terrain.camera.position.z
-          })
-        )
+          }
+        }
+
+        localStorage.setItem('wwwCraftGameData', JSON.stringify(wwwCraftGameData))
 
         // ui update
         this.onExit()
         this.onSave()
       } else {
         // load game
-        terrain.noise.seed =
-          Number(window.localStorage.getItem('seed')) ?? Math.random()
+        const wwwCraftGameData = JSON.parse(localStorage.getItem('wwwCraftGameData') || '{}')
+        
+        terrain.noise.seed = Number(wwwCraftGameData.seed) || Math.random()
 
-        const customBlocks =
-          (JSON.parse(
-            window.localStorage.getItem('block') || 'null'
-          ) as Block[]) ?? []
-
+        const customBlocks = wwwCraftGameData.block || []
         terrain.customBlocks = customBlocks
         terrain.initBlocks()
         terrain.generate()
 
-        const position =
-          (JSON.parse(window.localStorage.getItem('position') || 'null') as {
-            x: number
-            y: number
-            z: number
-          }) ?? null
-
+        const position = wwwCraftGameData.position as { x: number; y: number; z: number } ?? null
         position && (terrain.camera.position.x = position.x)
         position && (terrain.camera.position.y = position.y)
         position && (terrain.camera.position.z = position.z)
