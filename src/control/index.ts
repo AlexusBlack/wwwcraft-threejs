@@ -438,8 +438,9 @@ export default class Control {
               true
             )
             if(newBlock.type == BlockType.diamond) {
-              this.ui.linkDialog().then(link => {
-                newBlock.attributes[0] = link
+              this.ui.linkDialog().then(attributes => {
+                newBlock.attributes = attributes
+                console.log(attributes)
                 this.terrain.customBlocks.push(
                   newBlock
                 )
@@ -755,7 +756,13 @@ export default class Control {
             const block = blocks[0];
             //console.log(block)
             if(this.player.mode !== Mode.sneaking && block.type === BlockType.diamond && block.attributes.length > 0) {
-              document.location.href = block.attributes[0];
+              if(block.attributes[0] === 'link') {
+                const a = document.createElement('a');
+                a.href = block.attributes[1]
+                a.target = block.attributes[2]
+                a.click()
+              }
+              //document.location.href = block.attributes[0];
             }
           }
           // const block = this.raycasterDown.intersectObjects(this.terrain.blocks)[0]

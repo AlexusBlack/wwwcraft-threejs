@@ -252,6 +252,12 @@ body {
   margin-bottom: 10px;
 }
 
+.input--select {
+  appearance: auto;
+  line-height: 32px;
+  padding-top: 6px;
+}
+
 #distance-input,
 #fov-input {
   appearance: none;

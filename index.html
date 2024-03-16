@@ -58,8 +58,22 @@
     </div>
 
     <form class="create-link dialog hidden">
-      <p>Please enter the link URL:</p>
-      <input class="input" type="text" id="link" />
+      <p>Object type:</p>
+      <select class="input input--select" id="link-type">
+        <option value="link" selected>Link</option>
+        <option value="anchor">Anchor</option>
+      </select>
+
+      <div class="dialog__subset create-link__link">
+        <p>Please enter the link URL:</p>
+        <input class="input" type="text" id="link" placeholder="url" />
+        <input class="input" type="text" id="target" placeholder="target (optional)" />
+      </div>
+      
+      <div class="dialog__subset hidden create-link__anchor">
+        <p>Please enter the anchor name:</p>
+        <input class="input" type="text" id="anchor" />
+      </div>
 
       <button id="create-link-btn" class="button" type="submit">Apply</button>
     </form>

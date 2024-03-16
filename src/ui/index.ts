@@ -231,20 +231,45 @@ export default class UI {
 
 
   linkDialog = () => {
-    const linkDialogUi = document.querySelector('.create-link')
-    const linkDialogUiInput = linkDialogUi?.querySelector('input')
-    const linkDialogUiBtn = linkDialogUi?.querySelector('button')
-    return new Promise(resolve => {
-      linkDialogUi?.classList.remove('hidden')
-      // clear input
-      linkDialogUiInput?.setAttribute('value', '')
-      linkDialogUiInput?.focus()
+    const form = document.querySelector('.create-link')
+    const typeSelect = document.getElementById('link-type')
+    const linkInput = document.getElementById('link')
+    const targetInput = document.getElementById('target')
+    const anchorInput = document.getElementById('anchor')
 
-      linkDialogUi?.addEventListener('submit', (e) => {
+    const linkSubSet = form.querySelector('.create-link__link')
+    const anchorSubSet = form.querySelector('.create-link__anchor')
+
+    typeSelect.addEventListener('change', (e) => {
+      if(typeSelect.value === 'anchor') {
+        linkSubSet.classList.add('hidden')
+        anchorSubSet.classList.remove('hidden')
+      } else {
+        linkSubSet.classList.remove('hidden')
+        anchorSubSet.classList.add('hidden')
+      }
+    });
+    
+    return new Promise(resolve => {
+      form?.classList.remove('hidden')
+      // clear input
+      linkInput?.setAttribute('value', '')
+      targetInput?.setAttribute('value', '')
+      anchorInput?.setAttribute('value', '')
+      linkInput?.focus()
+
+      form?.addEventListener('submit', (e) => {
         e.preventDefault()
-        linkDialogUi?.classList.add('hidden')
-        resolve(linkDialogUiInput?.value)
-      })
+        const attributes = [typeSelect?.value];
+        if(typeSelect.value === 'link') {
+          attributes.push(linkInput?.value)
+          attributes.push(targetInput?.value)
+        } else if(typeSelect.value === 'anchor') {
+          attributes.push(anchorInput?.value)
+        }
+        form?.classList.add('hidden')
+        resolve(attributes)
+      }, {once:true})
     });
   }
 
