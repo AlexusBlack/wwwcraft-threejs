@@ -192,6 +192,17 @@ export default class UI {
       e.preventDefault()
       !isMobile && control.control.lock()
     })
+
+    window.addEventListener('hashchange', () => {
+      if(document.location.hash === '') return;
+
+      const blocks = terrain.customBlocks.filter(b => b.attributes.length > 1 && b.attributes[0] === 'anchor' && b.attributes[1] === document.location.hash.replace('#',''));
+      if(blocks.length > 0) {
+        this.terrain.camera.position.x = blocks[0].x
+        this.terrain.camera.position.y = blocks[0].y + 2
+        this.terrain.camera.position.z = blocks[0].z
+      }
+    });
   }
 
   fps: FPS
