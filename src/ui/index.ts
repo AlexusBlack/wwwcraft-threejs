@@ -282,6 +282,19 @@ export default class UI {
     this.terrain.generate()
 
     const position = wwwCraftGameData.position as { x: number; y: number; z: number } ?? null
+    // check if we have url hash value
+    if(document.location.hash !== '') {
+      // if hash present search for diamond block of anchor type with same name
+      const blocks = customBlocks.filter(b => b.attributes.length > 1 && b.attributes[0] === 'anchor' && b.attributes[1] === document.location.hash.replace('#',''));
+      if(blocks.length > 0) {
+        position.x = blocks[0].x
+        position.y = blocks[0].y + 2
+        position.z = blocks[0].z
+      }
+      
+    }
+  
+
     position && (this.terrain.camera.position.x = position.x)
     position && (this.terrain.camera.position.y = position.y)
     position && (this.terrain.camera.position.z = position.z)
